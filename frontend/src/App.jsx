@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <CreateTodo />
+      <CreateTodo setTodos={setTodos}/>
       <Todos todos={todos} />
     </>
   )

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import "./CreateTodo.css"
 
-export const CreateTodo = () => {
+export const CreateTodo = ({setTodos}) => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
 
@@ -11,6 +11,12 @@ export const CreateTodo = () => {
 
     const descriptionHandler = (event) => {
         setDescription(event.target.value)
+    }
+
+    const getTodos = async () => {
+        const response = await fetch("http://localhost:3000/todos")
+        const responseJson = await response.json()
+        setTodos(responseJson.todos)
     }
 
     const postTodo = async () => {
@@ -23,9 +29,10 @@ export const CreateTodo = () => {
             headers: {
                 "Content-type": "application/json"
             }
-        });
-        const responseJson = await response.json();
-        alert("Todo added");
+        })
+        const responseJson = await response.json()
+        getTodos()
+        alert("Todo added")
     }
 
     return (
@@ -34,6 +41,7 @@ export const CreateTodo = () => {
             <input type="text" placeholder="description" onChange={descriptionHandler} /> <br />
 
             <button onClick={postTodo}>Add a todo</button>
+            <button onClick={getTodos}>Get todos</button>
         </>
     )
 }
